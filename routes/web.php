@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ModelController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,8 +23,18 @@ Route::get('/', function () {
 
 Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'authenticate']);
-Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', [ModelController::class, 'index'])->middleware('auth')->name('dashboard');
-Route::get('/update-model-info', [ModelController::class, 'updateModelInfo'])->middleware('auth')->name('update-model-info');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [ModelController::class, 'index'])->name('dashboard');
+    Route::get('/update-model-info', [ModelController::class, 'updateModelInfo'])->name('update-model-info');
+
+    Route::get('/materials', [MaterialController::class, 'index'])->name('materials.index');
+    Route::post('/materials', [MaterialController::class, 'store'])->name('materials.store');
+    Route::get('/materials/{material}/edit', [MaterialController::class, 'edit'])->name('materials.edit');
+    Route::post('/materials/{material}/images', [MaterialController::class, 'uploadImage'])->name('materials.images.upload');
+    Route::put('/materials/{material}', [MaterialController::class, 'update'])->name('materials.update');
+    Route::delete('/materials/{material}', [MaterialController::class, 'destroy'])->name('materials.destroy');
+    Route::delete('/materials/{material}/images/{image}', [MaterialController::class, 'deleteImage'])->name('materials.images.delete');
+});
 

@@ -8,12 +8,20 @@
     <title>@yield('title', 'Default Title')</title>
     <link rel="stylesheet" href="{{ asset('css/fa/css/all.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sidebar.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('DataTables/datatables.min.css') }}">
+
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
 </head>
 
 <body>
     <div class="top-nav">
         <div class="nav-item"><a href="{{ route('dashboard') }}">Home</a></div>
-        <div class="nav-item"><a href="#collection">Collection</a></div>
+        <div class="nav-item"><a href="{{ route('materials.index') }}">Collection</a></div>
         <div class="nav-item"><a href="#training">Training</a></div>
     </div>
 

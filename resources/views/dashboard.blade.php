@@ -4,6 +4,9 @@
 
 @section('content')
 
+    {{-- check user session --}}
+    </p>{{ session('user') }}</p>
+
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
     <div class="container">

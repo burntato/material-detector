@@ -30,7 +30,7 @@ body, html {
 
 .main-content {
     padding: 20px;
-    margin-top: 50px; /* Ensure content is not hidden behind the nav bar */
+    margin-top: 30px; /* Ensure content is not hidden behind the nav bar */
 }
 
 .sidebar-footer {
@@ -44,5 +44,6 @@ body, html {
 }
 
 .sidebar-footer span, .sidebar-footer a {
-    margin: 0 10px;
+    margin: 10px 10px;
+    text-decoration: none;
 }
