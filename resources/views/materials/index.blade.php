@@ -19,7 +19,9 @@
                 @foreach ($materials as $material)
                     <tr>
                         <td>{{ $material->mat_name }}</td>
-                        <td>{{ $material->img_count }}</td>
+                        <td style="{{ $material->img_count >= 50 ? 'background-color: #90EE90;' : '' }}">
+                            {{ $material->img_count }}
+                        </td>
                         <td>{{ $material->last_update }}</td>
                         <td>
                             <a href="{{ route('materials.edit', $material) }}" class="btn btn-info">Edit</a>
