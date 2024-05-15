@@ -34,6 +34,7 @@
                     <div>{{ $class }}</div>
                 @endforeach
             </div>
+            <h3>Ready Status</h3>
         @else
             <p class="error">{{ $error ?? 'No model information available.' }}</p>
         @endif

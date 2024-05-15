@@ -12,6 +12,7 @@
                     <th>Material Name</th>
                     <th>Number of Images</th>
                     <th>Last Updated</th>
+                    <th>Ready</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -23,6 +24,7 @@
                             {{ $material->img_count }}
                         </td>
                         <td>{{ $material->last_update }}</td>
+                        <td>{{ $material->ready ? 'true' : 'false' }}</td>
                         <td>
                             <a href="{{ route('materials.edit', $material) }}" class="btn btn-info">Edit</a>
                             <form action="{{ route('materials.destroy', $material) }}" method="POST" style="display:inline;">

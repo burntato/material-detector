@@ -36,5 +36,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/materials/{material}', [MaterialController::class, 'update'])->name('materials.update');
     Route::delete('/materials/{material}', [MaterialController::class, 'destroy'])->name('materials.destroy');
     Route::delete('/materials/{material}/images/{image}', [MaterialController::class, 'deleteImage'])->name('materials.images.delete');
+
+    Route::get('/training', [ModelController::class, 'showTraining'])->name('show.training');
+    Route::post('/train', [ModelController::class, 'trainModel'])->name('train.model');
+
 });
 

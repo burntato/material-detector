@@ -22,7 +22,7 @@
     <div class="top-nav">
         <div class="nav-item"><a href="{{ route('dashboard') }}">Home</a></div>
         <div class="nav-item"><a href="{{ route('materials.index') }}">Collection</a></div>
-        <div class="nav-item"><a href="#training">Training</a></div>
+        <div class="nav-item"><a href="{{ route('show.training') }}">Training</a></div>
     </div>
 
     <div class="main-content">

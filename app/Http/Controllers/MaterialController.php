@@ -6,7 +6,6 @@ use App\Models\Image;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Intervention\Image\Facades\Image as ImageIntervention;
 
 class MaterialController extends Controller
 {
@@ -24,7 +23,7 @@ class MaterialController extends Controller
         ]);
 
         $material = Material::create([
-            'mat_name' => $request->mat_name,
+            'mat_name' => str_replace(' ', '_', $request->mat_name)
         ]);
 
         // Create a directory based on material name in a sanitized format
@@ -115,34 +114,12 @@ class MaterialController extends Controller
     public function uploadImage(Material $material, $image, $materialDir)
     {
         $imageName = uniqid() . '_' . $image->getClientOriginalName();
-        $fullPath = $materialDir . '/' . $imageName;
-
-        // Move the file to the server
         $image->move($materialDir, $imageName);
 
-        // Load the image for manipulation
-        $img = ImageIntervention::make($fullPath);
-
-        // Determine the size to crop to (the smallest dimension of the image)
-        $size = min($img->width(), $img->height());
-
-        // Crop the image to a square at the center
-        $img->crop($size, $size, ($img->width() - $size) / 2, ($img->height() - $size) / 2);
-
-        // Resize the image to 480x480 if it's not already that size
-        if ($size != 480) {
-            $img->resize(480, 480);
-        }
-
-        // Save the image with a 90% quality setting
-        $img->save($fullPath, 90);
-        
-        // Update the database
         $material->images()->create([
             'img_name' => $imageName,
         ]);
 
-        // Update material status
         $material->img_count = $material->images()->count();
         $material->ready = $material->img_count >= 50 ? true : false;
         $material->last_update = now();
@@ -151,7 +128,7 @@ class MaterialController extends Controller
 
     private function sanitizeFileName($filename)
     {
-        return preg_replace('/[^A-Za-z0-9_\-]/', '_', $filename); // Sanitize filename
+        return preg_replace('/[^A-Za-z0-9_\-]/', '_', $filename);
     }
 
     public function deleteImage(Material $material, Image $image)
