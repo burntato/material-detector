@@ -64,7 +64,7 @@ class ModelController extends Controller
         return view('training', compact('materials'));
     }
 
-    public function trainModel(Request $request)
+    public function trainModel()
     {
         $readyMaterials = Material::where('ready', true)->get();
         $pythonPath = '/home/osboxes/.pyenv/versions/3.9.0/bin/python3.9';
@@ -78,13 +78,57 @@ class ModelController extends Controller
         $process = new Process($command);
         $process->setTimeout(null); // Importante
 
-        // dd($process->getCommandLine());
+        dd($process->getCommandLine());
 
         try {
             $process->mustRun();
-
             return back()->with('success', 'Training finished!');
+
         } catch (ProcessFailedException $exception) {
+            
+            return back()->withError('Training failed: ' . $exception->getMessage());
+        }
+    }
+
+    public function resumeModel() 
+    {
+        # in case of resuming training
+        $readyMaterials = Material::where('ready', true)->get();
+        $pythonPath = '/home/osboxes/.pyenv/versions/3.9.0/bin/python3.9';
+        $scriptPath = '/home/osboxes/Documents/Projects/imgaug/train.py';
+
+        # check .txt files 
+        $filePath = '/home/osboxes/Documents/Projects/imgaug/history/progress.txt';
+
+        # check if file exists
+        if (!File::exists($filePath)) {
+            return back()->with('error', 'Progress file not found.');
+        }
+
+        # read the file
+        $progress = File::get($filePath);
+
+        # if file is empty, return "No Unfinished Training detected"
+        # else, restart the training
+
+        if (empty($progress)) {
+            return back()->with('error', 'No Unfinished Training detected.');
+        }
+
+        # Get the list of material names
+        $materialNames = $readyMaterials->pluck('mat_name')->toArray();
+
+        # Prepare the command with each material name as a separate argument
+        $command = array_merge([$pythonPath, $scriptPath], $materialNames);
+        $process = new Process($command);
+        $process->setTimeout(null); // Importante
+
+        try {
+            $process->mustRun();
+            return back()->with('success', 'Training finished!');
+
+        } catch (ProcessFailedException $exception) {
+            
             return back()->withError('Training failed: ' . $exception->getMessage());
         }
     }

@@ -39,6 +39,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/training', [ModelController::class, 'showTraining'])->name('show.training');
     Route::post('/train', [ModelController::class, 'trainModel'])->name('train.model');
-
+    Route::post('/resume', [ModelController::class, 'resumeModel'])->name('resume.training');
 });
 

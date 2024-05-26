@@ -28,6 +28,16 @@
             </div>
         </div>
         <div class="row mt-5">
+            <div class="col-md-12">
+                <h2>Resume Training</h2>
+                <p>Press the button below to resume training from where you left off. Do not close this page until the process is complete.</p>
+                <form method="POST" action="{{ route('resume.training') }}" onsubmit="showLoading()">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Resume Training</button>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-5">
             <div class="col-md-6">
                 <h4>Materials Ready for Training</h4>
                 <table class="table table-bordered" style="border-color: green;">
