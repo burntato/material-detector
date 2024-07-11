@@ -28,6 +28,7 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [ModelController::class, 'index'])->name('dashboard');
     Route::get('/update-model-info', [ModelController::class, 'updateModelInfo'])->name('update-model-info');
+    Route::get('/check-model-file-updates', [ModelController::class, 'checkModelFileUpdates'])->name('check-model-file-updates');
 
     Route::get('/materials', [MaterialController::class, 'index'])->name('materials.index');
     Route::post('/materials', [MaterialController::class, 'store'])->name('materials.store');

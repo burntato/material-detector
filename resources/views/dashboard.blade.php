@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 
     <div class="container">
-        <h1>Model Information Dashboard</h1>
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
             <div><strong>Output:</strong>
@@ -20,6 +22,8 @@
                 <pre>{{ session('errorOutput') }}</pre>
             </div>
         @endif
+        <h1>Model Information Dashboard</h1>
+        
         @if (isset($modelInfo))
             <h2>Latest Version: V{{ $modelInfo['version'] }}</h2>
             <h3>Model Files:</h3>
@@ -34,16 +38,45 @@
                     <div>{{ $class }}</div>
                 @endforeach
             </div>
-            <h3>Ready Status</h3>
         @else
             <p class="error">{{ $error ?? 'No model information available.' }}</p>
         @endif
         <form action="{{ route('update-model-info') }}" method="GET">
             @csrf
             <button type="submit">Update Model Info</button>
-            @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-            @endif
         </form>
+        <hr>
+        <div class="model-file-info">
+            @if (isset($jsonData) && count($jsonData) > 0)
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>File Name</th>
+                            <th>Last Modified Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($jsonData as $index => $file)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $file['file_name'] }}</td>
+                                <td>{{ $file['last_modified_time'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @else
+                <p>No model file updates available.</p>
+            @endif
+            <button style="background-color:#0059c4" id="check-updates">Check Model File Updates</button>
+        </div>
     </div>
+
+    <script>
+        document.getElementById('check-updates').addEventListener('click', function() {
+            window.location.href = "{{ route('check-model-file-updates') }}";
+        });
+    </script>
+
 @endsection

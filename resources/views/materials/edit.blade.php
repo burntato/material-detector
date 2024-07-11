@@ -11,11 +11,11 @@
         <div class="form-group">
             <label for="mat_name">Material Name</label>
             <input type="text" class="form-control" id="mat_name" name="mat_name" value="{{ $material->mat_name }}" required>
-        </div>
+        </div><br>
         <div class="form-group">
             <label for="new_images">Add New Images</label>
             <input type="file" class="form-control-file" id="new_images" name="images[]" accept=".jpg, .jpeg, .png" multiple>
-        </div>
+        </div><br>
         <button type="submit" class="btn btn-primary">Update Material</button>
     </form>
     <hr>

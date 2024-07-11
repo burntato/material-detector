@@ -43,19 +43,45 @@ class ModelController extends Controller
         }
     }
 
+    public function checkModelFileUpdates()
+    {
+        $pythonPath = '/home/osboxes/.pyenv/versions/3.9.0/bin/python3.9';
+        $scriptPath = '/home/osboxes/Documents/Projects/imgaug/model_version.py';
+
+        // Execute the Python script
+        $process = new Process([$pythonPath, $scriptPath]);
+        $process->run();
+
+        // Check for errors during execution
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        // Redirect back to the dashboard to reload the data
+        return redirect()->route('dashboard')->with('success', 'Model file updates checked successfully.');
+    }
+
     public function index()
     {
         $modelInfoPath = storage_path('app/models/model_info.json');
+        $outputFilePath = storage_path('app/models/tflite_files_last_modified.json');
 
-        if (!File::exists($modelInfoPath)) {
-            // Optionally create the file or handle the error appropriately
-            File::put($modelInfoPath, json_encode(['version' => 0, 'files' => [], 'classes' => []]));
-            return view('dashboard')->with('error', 'Model information file not found. A new file has been created.');
+        $modelInfo = ['version' => 0, 'files' => [], 'classes' => []];
+        if (File::exists($modelInfoPath)) {
+            $modelInfo = json_decode(File::get($modelInfoPath), true);
         }
 
-        $modelInfo = json_decode(File::get($modelInfoPath), true);
+        $jsonData = [];
+        if (File::exists($outputFilePath)) {
+            $jsonData = json_decode(File::get($outputFilePath), true);
 
-        return view('dashboard', compact('modelInfo'));
+            // Sort the data by last_modified_time in descending order
+            usort($jsonData, function ($a, $b) {
+                return strtotime($b['last_modified_time']) - strtotime($a['last_modified_time']);
+            });
+        }
+
+        return view('dashboard', compact('modelInfo', 'jsonData'));
     }
 
     public function showTraining()

@@ -4,8 +4,12 @@
 
 @section('content')
     <div class="container mt-4">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMaterialModal">Add Material Data</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMaterialModal">Add Material
+            Data</button><br>
+        <hr>
 
+        <h3>Material List</h3>
+        <p>A Minimum of 50 Materials is needed to qualify one material as ready for training.</p>
         <table id="materialsTable" class="table table-bordered">
             <thead>
                 <tr>
@@ -27,7 +31,8 @@
                         <td>{{ $material->ready ? 'true' : 'false' }}</td>
                         <td>
                             <a href="{{ route('materials.edit', $material) }}" class="btn btn-info">Edit</a>
-                            <form action="{{ route('materials.destroy', $material) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('materials.destroy', $material) }}" method="POST"
+                                style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger"

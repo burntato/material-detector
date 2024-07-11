@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imager - Material Picture Organizer</title>
+    <title>MPO - Material Picture Organizer</title>
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <style>
         body {
@@ -23,6 +23,7 @@
         .hero h1 {
             font-size: 3rem; /* Large, prominent title */
             margin-bottom: 0.5rem;
+            font-weight: bolder;
         }
         .hero p {
             font-size: 1.5rem; /* Clearly visible subtext */
@@ -45,7 +46,7 @@
 </head>
 <body>
     <div class="hero">
-        <h1>Imager</h1>
+        <h1>MPO</h1>
         <p>Material Picture Organizer</p>
         @if (Auth::check())
             <a href="{{ route('dashboard') }}" class="button">Dashboard</a>
