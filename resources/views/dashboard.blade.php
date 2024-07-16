@@ -48,10 +48,10 @@
         <hr>
         <div class="model-file-info">
             @if (isset($jsonData) && count($jsonData) > 0)
-                <table class="table">
+                <table id="file-table" class="table">
                     <thead>
                         <tr>
-                            <th>Number</th>
+                            <th>No</th>
                             <th>File Name</th>
                             <th>Last Modified Time</th>
                         </tr>
@@ -73,9 +73,14 @@
         </div>
     </div>
 
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
-        document.getElementById('check-updates').addEventListener('click', function() {
-            window.location.href = "{{ route('check-model-file-updates') }}";
+        $(document).ready(function() {
+            $('#file-table').DataTable();
+
+            $('#check-updates').click(function() {
+                window.location.href = "{{ route('check-model-file-updates') }}";
+            });
         });
     </script>
 

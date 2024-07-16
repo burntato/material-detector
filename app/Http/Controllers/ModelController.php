@@ -10,6 +10,29 @@ use Illuminate\Http\Request;
 
 class ModelController extends Controller
 {
+    public function index()
+    {
+        $modelInfoPath = storage_path('app/models/model_info.json');
+        $outputFilePath = storage_path('app/models/tflite_files_last_modified.json');
+
+        $modelInfo = ['version' => 0, 'files' => [], 'classes' => []];
+        if (File::exists($modelInfoPath)) {
+            $modelInfo = json_decode(File::get($modelInfoPath), true);
+        }
+
+        $jsonData = [];
+        if (File::exists($outputFilePath)) {
+            $jsonData = json_decode(File::get($outputFilePath), true);
+
+            // Sort the data by last_modified_time in descending order
+            usort($jsonData, function ($a, $b) {
+                return strtotime($b['last_modified_time']) - strtotime($a['last_modified_time']);
+            });
+        }
+
+        return view('dashboard', compact('modelInfo', 'jsonData'));
+    }
+
     public function updateModelInfo()
     {
         $pythonPath = '/home/osboxes/.pyenv/versions/3.9.0/bin/python3.9';
@@ -59,29 +82,6 @@ class ModelController extends Controller
 
         // Redirect back to the dashboard to reload the data
         return redirect()->route('dashboard')->with('success', 'Model file updates checked successfully.');
-    }
-
-    public function index()
-    {
-        $modelInfoPath = storage_path('app/models/model_info.json');
-        $outputFilePath = storage_path('app/models/tflite_files_last_modified.json');
-
-        $modelInfo = ['version' => 0, 'files' => [], 'classes' => []];
-        if (File::exists($modelInfoPath)) {
-            $modelInfo = json_decode(File::get($modelInfoPath), true);
-        }
-
-        $jsonData = [];
-        if (File::exists($outputFilePath)) {
-            $jsonData = json_decode(File::get($outputFilePath), true);
-
-            // Sort the data by last_modified_time in descending order
-            usort($jsonData, function ($a, $b) {
-                return strtotime($b['last_modified_time']) - strtotime($a['last_modified_time']);
-            });
-        }
-
-        return view('dashboard', compact('modelInfo', 'jsonData'));
     }
 
     public function showTraining()

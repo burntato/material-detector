@@ -45,18 +45,18 @@
         </table>
     </div>
 
-    @include('materials.modals.add')
-@endsection
-
-@push('scripts')
     <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('#materialsTable').DataTable({
                 order: [
                     [2, 'desc']
-                ]
+                ],
+                lengthChange: false,
+                pageLength: 15
             });
         });
     </script>
-@endpush
+
+    @include('materials.modals.add')
+@endsection
